@@ -1,0 +1,68 @@
+comment for the reviewer : ik this code might not look like code at all
+                           but it is code for a cod based art generator like i mentioned
+                           in my devlog called context free art . You can verify this works by putting
+                           this code in that application ;>
+
+
+startshape building
+
+background{h 56.93 sat 0.47010 }
+
+size {s 4 y 1}
+
+rule building{
+    bul{}
+    SQUARE{s 50 1 y .5 z 1}
+    SQUARE{s .5 10 z 1 r 78 x 1.3}
+    SQUARE{s .5 10 z 1 r -78 x -1.3}
+    moon{z 2 s .3 x 0 y .3}
+    300* {}star{}
+
+
+}
+
+rule bul{
+    grid{    }
+    bul{s .84 b .05}
+}
+
+
+rule grid{
+    10*{r 10}line{}
+    10*{r -10}line{}
+    10*{y -1}hline{}
+
+}
+
+path line{
+    LINETO {x 0 y -11}
+    STROKE{}
+
+}
+
+path hline{
+    MOVETO {x -10 y 0}
+    LINETO{x 10 y 0}
+    STROKE{}
+
+}
+
+rule moon {
+    CIRCLE{}
+    moon{s .98 b .05}
+}
+
+rule star 0.3 {
+    stars{
+     x (rand(-2.2,2.2))
+     y (rand(0.,0.75))
+     s (rand(0.02,0.04))
+     b (rand (0.5,1.0))
+     z 1
+        }
+}
+rule stars {
+    CIRCLE{}
+    SQUARE { s 2.5 0.2 b 1 }
+    SQUARE { s 0.2 2.5 b 1 }
+}
