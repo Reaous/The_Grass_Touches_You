@@ -10,13 +10,15 @@ const k = kaplay({
 
 k.loadRoot("./"); 
 
-
+k.loadSprite("info","sprites/info.png")
 k.loadSprite("you", "sprites/Untitled.png");
 k.loadSprite("room1","sprites/room.jpg" )
-k.loadSprite("room2","/sprites/room warped.png")
-k.loadSprite("room3","/sprites/door..png")
+k.loadSprite("room2","sprites/room_warped.png")
+k.loadSprite("room3","sprites/door..png")
 k.loadSprite("swipe","sprites/swipe.png" ,{ singular :true})
 k.loadSound("speak","sprites/type_sound.mp3")
+k.loadSound("impact","sprites/impact.mp3")
+
 
 k.loadShader(
     "swipe",
@@ -41,8 +43,6 @@ let swipeFrame;
 k.onLoad(() => {
     swipeFrame = k.getSprite("swipe").data.frames[0];
 });
-
-
 
 
 k.scene("roomstart", () => {
@@ -75,7 +75,13 @@ const room3 = k.add([
             k.opacity(0)
         ]);
 
-
+    const info = k.add([
+        k.sprite("info", {width: 200, height :250}),
+        k.pos(500,100),
+        k.z(0),
+        k.opacity(1),
+            
+        ]);
 
     const door = k.add([
         k.rect(50,60),
@@ -129,14 +135,13 @@ const room3 = k.add([
     ])
 
     k.add([
-        k.rect(230,1),
+        k.rect(250,1),
         k.area(),
-        k.pos(360,100),
+        k.pos(380,100),
         k.opacity(0),
         k.body({isStatic:true}),
         "boundarytop2"
     ])
-
 
     const player = k.add([
         k.pos(100,180),
@@ -156,6 +161,8 @@ const room3 = k.add([
 
 
 const dialogs = [
+    "The grass : ",
+    "We are tired of waiting for you to touch us ",
     "come outside lil bro....",
     "we are waiting" ,];
 
@@ -201,14 +208,23 @@ function nextDialogue() {
     textbox.opacity =0 ;
     isTalking=false;
     k.add([
-        k.rect(60,100),
-        k.pos(100,40),
-        k.color(0,0,0),
-        k.opacity(0.5)
+        k.rect(300,50),
+        k.pos(170,240),
+        k.color(255,255,255),
+        k.opacity(0.5),
+        k.area(),
+        "wait"
     ])
     }
 
 }
+let s1 =0
+player.onCollide("wait",() => {
+room3.opacity =1;
+if (s1===0)
+    {k.play("impact"); s1++};
+
+})
 
 {k.onKeyPress(["space"],()=> {
     if (isTalking) {
@@ -221,6 +237,7 @@ let dcount =0
 player.onCollide("boundaryright",()=>{
     if(!isTalking) {
         startdialogue();
+        info.opacity = 0,
         dcount++;
     }
 })
