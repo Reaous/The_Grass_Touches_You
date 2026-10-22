@@ -18,7 +18,7 @@ k.loadSprite("room3","sprites/door..png")
 k.loadSprite("swipe","sprites/swipe.png" ,{ singular :true})
 k.loadSound("speak","sprites/type_sound.mp3")
 k.loadSound("impact","sprites/impact.mp3")
-
+k.loadSprite("grass","sprites/grass.png")
 
 k.loadShader(
     "swipe",
@@ -76,13 +76,21 @@ const room3 = k.add([
         ]);
 
     const info = k.add([
-        k.sprite("info", {width: 200, height :250}),
-        k.pos(500,100),
+        k.sprite("info", {width: 250, height :100}),
+        k.pos(480,150),
         k.z(0),
         k.opacity(1),
+        k.z(100)
             
         ]);
 
+    const infobox = k.add([ 
+        k.rect(35 ,40),
+        k.pos(587,164),
+        k.z(0),
+        k.opacity(1)
+
+    ])    
     const door = k.add([
         k.rect(50,60),
         k.area(),
@@ -94,7 +102,7 @@ const room3 = k.add([
     ])
 
 
-
+ 
 
 //boundaries(they take alot of time to make uk for somethign fkn invisible)
 
@@ -161,7 +169,7 @@ const room3 = k.add([
 
 
 const dialogs = [
-    "The grass : ",
+    "The grass: ",
     "We are tired of waiting for you to touch us ",
     "come outside lil bro....",
     "we are waiting" ,];
@@ -171,7 +179,7 @@ let curDialog = 0;
 let isTalking = false;
 
 const textbox = k.add([
-    k.rect(k.width() - 100,100, {radius: 4}),
+    k.rect(k.width() - 220,k.height() -300, {radius: 3}),
     k.anchor("center"),
     k.pos(k.center().x,k.height()-100),
     k.outline(4),
@@ -182,7 +190,7 @@ const textbox = k.add([
 
 const txt = textbox.add([
     k.text("",{
-        size: 32,
+        size: 22,
         width: k.width()-140,
         align:"center", }),
     k.color(0,0,0),
@@ -191,12 +199,22 @@ const txt = textbox.add([
 
 ]);
 
+   const grass = k.add([
+        k.sprite("grass"),
+        k.scale(0.3),
+        k.opacity(0),
+        k.pos(110,120),
+        k.z(200)
+    ])
+
+
 function startdialogue() {
     isTalking = true;
     curDialog= 0;
     textbox.opacity = 1;
     txt.text = dialogs[curDialog]
     room2.opacity = 1;
+    grass.opacity = 1;
 }
 
 function nextDialogue() {
@@ -206,8 +224,9 @@ function nextDialogue() {
         txt.text =dialogs[curDialog];
     } else {
     textbox.opacity =0 ;
+    grass.opacity =0;
     isTalking=false;
-    k.add([
+    const wait =k.add([
         k.rect(300,50),
         k.pos(170,240),
         k.color(255,255,255),
@@ -222,9 +241,15 @@ let s1 =0
 player.onCollide("wait",() => {
 room3.opacity =1;
 if (s1===0)
-    {k.play("impact"); s1++};
+    {k.play("impact");{
+        k.setVolume(0.5)
+    } s1++}
+else{
+txt.opacity=0 ;
 
-})
+};
+
+});
 
 {k.onKeyPress(["space"],()=> {
     if (isTalking) {
@@ -235,9 +260,10 @@ if (s1===0)
 let dcount =0
 
 player.onCollide("boundaryright",()=>{
-    if(!isTalking) {
+    if(!isTalking){
         startdialogue();
         info.opacity = 0,
+        infobox.opacity=0,
         dcount++;
     }
 })
@@ -261,11 +287,27 @@ if (dcount > 0) {
 
 
 k.scene("out1",() => {
+
+
+
     k.add([
         k.text("placeholder"),
         k.pos(k.center()),
         k.anchor("center"),
     ]);
 });
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 k.go("roomstart");
