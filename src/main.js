@@ -44,11 +44,28 @@ k.onLoad(() => {
     swipeFrame = k.getSprite("swipe").data.frames[0];
 });
 
-
 k.scene("roomstart", () => {
 
     const speed = (300)
 
+        const player = k.add([
+        k.pos(100,180),
+        k.sprite("you"),
+        k.area(),
+        k.body(),
+        "punpun",
+        k.stay()
+    ])
+    
+    
+    player.onUpdate(() => {
+        if (isTalking) return;
+        if (k.isKeyDown("w")) player.move(0,-speed);
+        if (k.isKeyDown("s")) player.move(0,speed);
+        if (k.isKeyDown("a")) player.move(-speed,0);
+        if (k.isKeyDown("d")) player.move(speed,0);
+        k.stay();
+    })
 
 const room1 =   k.add([
         k.sprite("room1", 
@@ -112,7 +129,8 @@ const room3 = k.add([
         k.pos(0,0),
         k.body({isStatic:true}),
         k.opacity(0),
-        "boundaryleft"
+        "boundaryleft",
+        k.stay()
     ])
 
     k.add([
@@ -121,7 +139,9 @@ const room3 = k.add([
         k.pos(630,0),
         k.opacity(0),
         k.body({isStatic:true}),
-        "boundaryright"
+        "boundaryright",
+        k.stay(),
+
     ])
     
     k.add([
@@ -130,7 +150,8 @@ const room3 = k.add([
         k.pos(0,340),
         k.opacity(0),
         k.body({isStatic:true}),
-        "boundarybottom"
+        "boundarybottom",
+        k.stay(),
     ])
 
     k.add([
@@ -139,7 +160,8 @@ const room3 = k.add([
         k.pos(0,100),
         k.opacity(0),
         k.body({isStatic:true}),
-        "boundarytop 1"
+        "boundarytop 1",
+        
     ])
 
     k.add([
@@ -148,24 +170,13 @@ const room3 = k.add([
         k.pos(380,100),
         k.opacity(0),
         k.body({isStatic:true}),
-        "boundarytop2"
+        "boundarytop2",
+        
     ])
 
-    const player = k.add([
-        k.pos(100,180),
-        k.sprite("you"),
-        k.area(),
-        k.body(),
-        "punpun"
-    ])
+
     
-    k.onUpdate(() => {
-        if (isTalking) return;
-        if (k.isKeyDown("w")) player.move(0,-speed);
-        if (k.isKeyDown("s")) player.move(0,speed);
-        if (k.isKeyDown("a")) player.move(-speed,0);
-        if (k.isKeyDown("d")) player.move(speed,0);
-    })
+
 
 
 const dialogs = [
@@ -195,7 +206,8 @@ const txt = textbox.add([
         align:"center", }),
     k.color(0,0,0),
     k.anchor("center"),
-    k.pos(0,0)
+    k.pos(0,0),
+    k.stay()
 
 ]);
 
@@ -204,7 +216,8 @@ const txt = textbox.add([
         k.scale(0.3),
         k.opacity(0),
         k.pos(110,120),
-        k.z(200)
+        k.z(200),
+        "grass",
     ])
 
 
@@ -246,9 +259,7 @@ if (s1===0)
     } s1++}
 else{
 txt.opacity=0 ;
-
 };
-
 });
 
 {k.onKeyPress(["space"],()=> {
@@ -288,26 +299,81 @@ if (dcount > 0) {
 
 k.scene("out1",() => {
 
+    const player =k.get("punpun")[0];
+
+       const grass = k.add([
+        k.sprite("grass"),
+        k.scale(0.2),
+        k.opacity(1),
+        k.pos(20,12),
+        k.z(200),
+        "grass",
+    ])
+
+
 
 
     k.add([
-        k.text("placeholder"),
-        k.pos(k.center()),
-        k.anchor("center"),
-    ]);
+        k.rect(800,1),
+        k.pos(30,40),
+        k.opacity(0.5),
+        k.area(),
+        k.body({isStatic:true})
+    ])
+
+        k.add([
+        k.rect (1,360),
+        k.area(),
+        k.pos(600,0),
+        k.opacity(0),
+        k.body({isStatic:true}),
+        ])
+
+    const text =k.add([
+        k.text("'The world is beatiful Twin'",{size:(32)}), 
+        k.color(0,0,0),
+        k.pos(130,50),
+        k.opacity(1),
+        k.area(),
+        k.body({isStatic:true}),
+    ])
+
+
+    const subtext =k.add([
+        k.text("where do you want to explore?",{size:(15)}),
+        k.pos(20,120)
+
+    ])
+
+    text.onHover( () => {
+        text.color = k.rand(rgb(255, 255, 255));
+        k.scale(2)
+    })
+
+    player.onCollide("text",() => {
+        text.color = k.rand(rgb(255,255,255));
+    })
+
+    k.add([
+        k.rect(100,100),
+        k.pos(20,220),
+        k.color(rgb(223,224,22))
+    ])
+
+    k.add([
+        k.rect(100,100),
+        k.pos(200,220),
+        k.color(rgb(64, 103, 26))
+    ])
+
+    k.add([
+        k.rect(100,100),
+        k.pos(400,220),
+        k.color(rgb(9, 51, 94))
+
+    ])
+
+
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 k.go("roomstart");
