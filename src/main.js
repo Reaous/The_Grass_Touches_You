@@ -20,6 +20,10 @@ k.loadSound("speak","sprites/type_sound.mp3")
 k.loadSound("impact","sprites/impact.mp3")
 k.loadSprite("grass","sprites/grass.png")
 
+k.loadSprite("hell","sprites/hell.png")
+k.loadSprite("forest","sprites/forest.png")
+k.loadSprite("hill","sprites/mountain.png")
+
 k.loadShader(
     "swipe",
     null,
@@ -140,7 +144,6 @@ const room3 = k.add([
         k.opacity(0),
         k.body({isStatic:true}),
         "boundaryright",
-        k.stay(),
 
     ])
     
@@ -151,7 +154,7 @@ const room3 = k.add([
         k.opacity(0),
         k.body({isStatic:true}),
         "boundarybottom",
-        k.stay(),
+        k.stay("out1"),
     ])
 
     k.add([
@@ -299,7 +302,7 @@ if (dcount > 0) {
 
 k.scene("out1",() => {
 
-    const player =k.get("punpun")[0];
+    const player =k.get("punpun")[0]
 
        const grass = k.add([
         k.sprite("grass"),
@@ -354,26 +357,116 @@ k.scene("out1",() => {
         text.color = k.rand(rgb(255,255,255));
     })
 
-    k.add([
+    const hell = k.add([
         k.rect(100,100),
         k.pos(20,220),
-        k.color(rgb(223,224,22))
+        k.color(rgb(224, 96, 22)),
+        k.area(),
+        k.body({isStatic:true}),
+        "hell"
     ])
 
-    k.add([
+    const forest = k.add([
         k.rect(100,100),
         k.pos(200,220),
-        k.color(rgb(64, 103, 26))
+        k.color(rgb(101, 176, 26)),
+        k.area(),
+        k.body({isStatic:true}),
+        "forest"
     ])
 
-    k.add([
+    const blackhole = k.add([
         k.rect(100,100),
         k.pos(400,220),
-        k.color(rgb(9, 51, 94))
+        k.color(rgb(0, 0, 0)),
+        k.area(),
+        k.body({isStatic:true}),
+        "blackhole"
 
     ])
 
 
+    player.onCollide("hell", () => {
+        k.go("hell");
+
+    });
+
 });
+
+k.scene("hell",() => {
+
+    k.setGravity(500);
+
+
+    const player =k.get("punpun")[0]
+    
+    player.pos = k.vec2(200,100);
+
+    const background = k.add([
+        k.sprite("hell",{
+        width : k.width(),height : k.height()}),
+        k.pos(0,0),
+        k.z(-100)
+        ]);
+
+const hill =k.add([
+    k.sprite("hill"),
+    k.pos(0,0),
+    k.z(-20),
+    k.opacity(1)
+])
+
+k.add([
+    k.rect(400,300),
+    k.pos(90,220),
+    k.area(),
+    k.body({isStatic:true}),
+    k.opacity(0)
+])
+
+k.add([
+    k.rect(200,300),
+    k.pos(30,240),
+    k.area(),
+    k.body({isStatic:true}),
+    k.opacity(0),
+
+])
+
+k.add([
+    k.rect(10,250),
+    k.opacity(1),
+    k.pos(550,300),
+    k.area(),
+    k.body({isStatic:true}),
+    k.anchor("center"),
+    k.rotate(130),
+
+])
+
+const ball =k.add([
+    k.circle(30),
+    k.pos(450,200),
+    k.area(),
+    k.body({gravityScale:50}),
+    k.color(rgb(202, 159, 16)),
+    k.offscreen(),
+    "ball"
+
+
+])
+
+ball.onExitScreen( () => {
+    k.add([
+        k.text("hi"),
+    ])
+});
+
+});
+
+
+
+
+
 
 k.go("roomstart");
