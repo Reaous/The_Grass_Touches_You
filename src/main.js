@@ -23,6 +23,8 @@ k.loadSprite("grass","sprites/grass.png")
 k.loadSprite("hell","sprites/hell.png")
 k.loadSprite("forest","sprites/forest.png")
 k.loadSprite("hill","sprites/mountain.png")
+k.loadSound("rock","sprites/rock.mp3")
+k.loadSound("cry","sprites/cry.mp3")
 
 k.loadShader(
     "swipe",
@@ -50,7 +52,7 @@ k.onLoad(() => {
 
 k.scene("roomstart", () => {
 
-    const speed = (300)
+    const speed = (200)
 
         const player = k.add([
         k.pos(100,180),
@@ -301,7 +303,7 @@ if (dcount > 0) {
 
 
 k.scene("out1",() => {
-
+    k.setGravity(0);
     const player =k.get("punpun")[0]
 
        const grass = k.add([
@@ -313,7 +315,8 @@ k.scene("out1",() => {
         "grass",
     ])
 
-
+    player.pos =vec2(200,100)
+    player.vel = k.vec2(0, 0); 
 
 
     k.add([
@@ -381,7 +384,7 @@ k.scene("out1",() => {
         k.color(rgb(0, 0, 0)),
         k.area(),
         k.body({isStatic:true}),
-        "blackhole"
+        "black"
 
     ])
 
@@ -395,7 +398,7 @@ k.scene("out1",() => {
 
 k.scene("hell",() => {
 
-    k.setGravity(500);
+    k.setGravity(300);
 
 
     const player =k.get("punpun")[0]
@@ -435,7 +438,7 @@ k.add([
 
 k.add([
     k.rect(10,250),
-    k.opacity(1),
+    k.opacity(0),
     k.pos(550,300),
     k.area(),
     k.body({isStatic:true}),
@@ -456,11 +459,46 @@ const ball =k.add([
 
 ])
 
+const intro = k.add([
+    k.text("You have a urge to push over the boulder for some reason.",{size :30,width:340}),
+    k.opacity(1),
+    k.pos(50,30),
+    "intro"
+])
+
+const back =k.add([
+    k.text("Go back to selector =>",{size:17}),
+    k.opacity(0),
+    k.pos(420,140),
+    k.color(rgb(106, 7, 245)),
+    "back"
+
+])
+
 ball.onExitScreen( () => {
     k.add([
-        k.text("hi"),
-    ])
+        k.text("You hear sobs coming from the bottom of the mountain from someone named sisyphus, poor guy ",{size:26 ,width:340}),
+        k.pos(100,40)]);
+    intro.opacity = 0;
+    back.opacity = 1;
+    k.play("rock");
+    k.play("cry",{volume:0.5});
 });
+
+
+const collide = k.add([
+    k.rect(10,360),
+    k.opacity(0.2),
+    k.pos(640,0),
+    k.area(),
+    "collide",
+])
+
+player.onCollide("collide", ()=> 
+    {k.go("out1")
+    k.setGravity(0);
+    
+    });
 
 });
 
