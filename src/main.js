@@ -19,12 +19,15 @@ k.loadSprite("swipe","sprites/swipe.png" ,{ singular :true})
 k.loadSound("speak","sprites/type_sound.mp3")
 k.loadSound("impact","sprites/impact.mp3")
 k.loadSprite("grass","sprites/grass.png")
-
 k.loadSprite("hell","sprites/hell.png")
 k.loadSprite("forest","sprites/forest.png")
 k.loadSprite("hill","sprites/mountain.png")
 k.loadSound("rock","sprites/rock.mp3")
 k.loadSound("cry","sprites/cry.mp3")
+k.loadSprite("sky","sprites/sky.png")
+k.loadSprite("moon","sprites/moon.jpg")
+
+
 
 k.loadShader(
     "swipe",
@@ -300,8 +303,6 @@ if (dcount > 0) {
     );
 });
 
-
-
 k.scene("out1",() => {
     k.setGravity(0);
     const player =k.get("punpun")[0]
@@ -317,6 +318,7 @@ k.scene("out1",() => {
 
     player.pos =vec2(200,100)
     player.vel = k.vec2(0, 0); 
+    player.scale = k.vec2(1, 1);
 
 
     k.add([
@@ -369,13 +371,13 @@ k.scene("out1",() => {
         "hell"
     ])
 
-    const forest = k.add([
+    const skyscraper = k.add([
         k.rect(100,100),
         k.pos(200,220),
         k.color(rgb(101, 176, 26)),
         k.area(),
         k.body({isStatic:true}),
-        "forest"
+        "skyscrapper"
     ])
 
     const blackhole = k.add([
@@ -391,6 +393,11 @@ k.scene("out1",() => {
 
     player.onCollide("hell", () => {
         k.go("hell");
+
+    player.onCollide("skyscrapper", () => {
+        k.go("skyscrapper");
+
+    })
 
     });
 
@@ -482,7 +489,7 @@ ball.onExitScreen( () => {
     intro.opacity = 0;
     back.opacity = 1;
     k.play("rock");
-    k.play("cry",{volume:0.5});
+    k.play("cry",{volume:0.3});
 });
 
 
@@ -502,9 +509,93 @@ player.onCollide("collide", ()=>
 
 });
 
+k.scene("skyscrapper",() => {
+    
+    const speed = (1)
+
+    const background = k.add([
+        k.sprite("sky", {width :k.width(),height: k.height()}),
+        k.z(-100)
+    ])
+
+    const player = k.get("punpun")[0];
+
+    k.onUpdate( () => {
+        const s = k.map(player.pos.y,110,300,0.25,1.5);
+        player.scale=k.vec2(k.clamp(s,0.25,1.5))
+    })
+
+    const moon = k.add ([
+        k.circle(20),
+        k.opacity(0),
+        k.pos(320,60),
+        k.area(),
+        k.body({isStatic:true}),
+        "moon"
+
+    ])
+
+    k.add([
+        k.rect(200,100),
+        k.pos(0,0),
+        k.opacity(0),
+        k.area(),
+        k.body({isStatic:true}),
+
+    ])
 
 
+        k.add([
+        k.rect(200,100),
+        k.pos(470,0),
+        k.opacity(0),
+        k.area(),
+        k.body({isStatic:true}),
+
+    ])
+
+    player.onCollide("moon", ()=> {
+        k.go("moon")
+
+    })
+
+});
+
+k.scene("moon", () => {
+    k.add([
+        k.sprite("moon", {width:k.width(), height:k.height()}),
+        k.z(-100),
+    ]);
+
+const player= k.get("punpun")[0]
+
+    player.pos = k.vec2(300,300);
 
 
+    k.add([
+        k.text("See when you are open to explore and go outside even reaching the moon isn't imposible! :D",{size:25,width:200}),
+        k.pos(20,20)
+    ]);
+
+    k.add([
+        k.text("<= go back to earth",{size:18}),
+        k.pos(440,100)
+    ])
+
+    const earth = k.add([
+        k.circle(40),
+        k.pos(330,100),
+        k.opacity(0),
+        k.body({isStatic:true}),
+        k.area(),
+        "earth",
+    ])
+
+        player.onCollide("earth", () =>{
+            k.go("out1")
+
+        })
+
+})
 
 k.go("roomstart");
