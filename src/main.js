@@ -25,6 +25,8 @@ k.loadSound("cry","sprites/cry.mp3")
 k.loadSprite("sky","sprites/sky.png")
 k.loadSprite("moon","sprites/moon.jpg")
 k.loadSprite("sku","sprites/sku.jpg")
+k.loadMusic("startsong","sprites/startsong.mp3")
+k.loadMusic("spacesong","sprites/spacesong.mp3")
 
 
 k.loadShader(
@@ -52,6 +54,11 @@ k.onLoad(() => {
 });
 
 k.scene("roomstart", () => {
+
+    const bg =k.play("startsong",{volume:0.5})
+        k.wait(5), ()=> {
+        bg.stop();
+    }
 
     const speed = (150)
 
@@ -296,6 +303,7 @@ if (dcount > 0) {
 }
 
     player.onCollide("door_out",() => {
+            bg.stop()
             k.go("out1");       
         }
 
@@ -305,6 +313,8 @@ if (dcount > 0) {
 k.scene("out1",() => {
     k.setGravity(0);
     const player =k.get("punpun")[0]
+
+
 
     k.add([
         k.sprite("sku",{width:k.width(),height:k.height()}),
@@ -420,10 +430,10 @@ k.scene("out1",() => {
     ])
 
     player.onCollide("hell", () => {
-        k.go("hell");
+        k.go("hell")
 
     player.onCollide("skyscrapper", () => {
-        k.go("skyscrapper");
+        k.go("skyscrapper")
 
     player.onCollide("end", () => {
         k.go("end")
@@ -521,6 +531,7 @@ ball.onExitScreen( () => {
         k.pos(100,40)]);
     intro.opacity = 0;
     back.opacity = 1;
+    k.shake(3)
     k.play("cry",{volume:0.3});
 });
 
@@ -534,7 +545,9 @@ const collide = k.add([
 ])
 
 player.onCollide("collide", ()=> 
-    {k.go("out1")
+    {  
+
+        k.go("out1")
     k.setGravity(0);
     
     });
@@ -542,7 +555,10 @@ player.onCollide("collide", ()=>
 });
 
 k.scene("skyscrapper",() => {
-    
+    k.play("spacesong")  
+    k.wait(5), ()=> {
+        bg.stop();
+    }
     const speed = (1)
 
     const background = k.add([
@@ -594,6 +610,8 @@ k.scene("skyscrapper",() => {
 });
 
 k.scene("moon", () => {
+
+
     k.add([
         k.sprite("moon", {width:k.width(), height:k.height()}),
         k.z(-100),
@@ -624,6 +642,7 @@ const player= k.get("punpun")[0]
     ])
 
         player.onCollide("earth", () =>{
+
             k.go("out1")
 
         })
@@ -631,8 +650,8 @@ const player= k.get("punpun")[0]
 })
 
 k.scene("end",()=> {
-    k.add([
 
+    k.add([
         k.text("So this is the end...Stay curious and explore more,Remember you get only one chance at life :] ", {width : 600 , size:30}),
         k.pos(14,60)
 
