@@ -8,7 +8,6 @@ const k = kaplay({
         background : [100,60,40],
 });
 
-k.loadRoot("./"); 
 
 k.loadSprite("info","sprites/info.png")
 k.loadSprite("you", "sprites/Untitled.png");
@@ -20,7 +19,6 @@ k.loadSound("speak","sprites/type_sound.mp3")
 k.loadSound("impact","sprites/impact.mp3")
 k.loadSprite("grass","sprites/grass.png")
 k.loadSprite("hell","sprites/hell.png")
-k.loadSprite("forest","sprites/forest.png")
 k.loadSprite("hill","sprites/mountain.png")
 k.loadSound("rock","sprites/rock.mp3")
 k.loadSound("cry","sprites/cry.mp3")
