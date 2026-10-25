@@ -1,16 +1,13 @@
-# Folder structure
+General overview:
+This is a game about exploration and going outside and just weird surreal things!
 
-- `src` - source code for your kaplay project
-- `dist` - distribution folder, contains your index.html, built js bundle and static assets
+( This was my first game made actually and i used kaplay while learning javascript along the way :D .)
 
+Plot:
+The plot is you follow around the protaganist exploring the weird ,surreal  and esoteric things shown by the grass which has grown tired of not being touched.
 
-## Development
-
-```sh
-$ npm run dev
-```
-
-will start a dev server at http://localhost:8000
+Controls:
+Use wasd for movement and space bare for dialogue boxes.
 
 ## Distribution
 

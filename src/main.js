@@ -26,7 +26,7 @@ k.loadSound("rock","sprites/rock.mp3")
 k.loadSound("cry","sprites/cry.mp3")
 k.loadSprite("sky","sprites/sky.png")
 k.loadSprite("moon","sprites/moon.jpg")
-
+k.loadSprite("sku","sprites/sku.jpg")
 
 
 k.loadShader(
@@ -55,16 +55,17 @@ k.onLoad(() => {
 
 k.scene("roomstart", () => {
 
-    const speed = (200)
+    const speed = (150)
 
         const player = k.add([
-        k.pos(100,180),
+        k.pos(500,180),
         k.sprite("you"),
         k.area(),
         k.body(),
         "punpun",
         k.stay()
     ])
+    
     
     
     player.onUpdate(() => {
@@ -307,6 +308,11 @@ k.scene("out1",() => {
     k.setGravity(0);
     const player =k.get("punpun")[0]
 
+    k.add([
+        k.sprite("sku",{width:k.width(),height:k.height()}),
+        k.z(-100)
+    ])
+
        const grass = k.add([
         k.sprite("grass"),
         k.scale(0.2),
@@ -339,7 +345,7 @@ k.scene("out1",() => {
 
     const text =k.add([
         k.text("'The world is beatiful Twin'",{size:(32)}), 
-        k.color(0,0,0),
+        k.color(rgb(204, 179, 179)),
         k.pos(130,50),
         k.opacity(1),
         k.area(),
@@ -363,7 +369,7 @@ k.scene("out1",() => {
     })
 
     const hell = k.add([
-        k.rect(100,100),
+        k.rect(120,100),
         k.pos(20,220),
         k.color(rgb(224, 96, 22)),
         k.area(),
@@ -371,8 +377,14 @@ k.scene("out1",() => {
         "hell"
     ])
 
-    const skyscraper = k.add([
-        k.rect(100,100),
+    hell.add([
+        k.text ("1.Hell", {align :"center"}),
+        k.color(rgb(0, 2, 3))
+
+    ])
+
+    const skyscrapper = k.add([
+        k.rect(120,100),
         k.pos(200,220),
         k.color(rgb(101, 176, 26)),
         k.area(),
@@ -380,22 +392,45 @@ k.scene("out1",() => {
         "skyscrapper"
     ])
 
-    const blackhole = k.add([
-        k.rect(100,100),
+        skyscrapper.add([
+        k.text ("2.Moon", {align :"center"}),
+        k.color(rgb(7, 68, 99))
+
+    ])
+
+
+
+    const end = k.add([
+        k.rect(120,100),
         k.pos(400,220),
         k.color(rgb(0, 0, 0)),
         k.area(),
         k.body({isStatic:true}),
-        "black"
+        "end"
 
     ])
 
+        end.add([
+        k.text ("3.end", {align :"center"}),
+        k.color(rgb(230, 236, 239))
+
+    ])
+
+    k.add([
+        k.text("(go by order ;])",{size :15}),
+        k.pos(400,130)
+    ])
 
     player.onCollide("hell", () => {
         k.go("hell");
 
     player.onCollide("skyscrapper", () => {
         k.go("skyscrapper");
+
+    player.onCollide("end", () => {
+        k.go("end")
+
+    })
 
     })
 
@@ -488,7 +523,6 @@ ball.onExitScreen( () => {
         k.pos(100,40)]);
     intro.opacity = 0;
     back.opacity = 1;
-    k.play("rock");
     k.play("cry",{volume:0.3});
 });
 
@@ -595,6 +629,24 @@ const player= k.get("punpun")[0]
             k.go("out1")
 
         })
+
+})
+
+k.scene("end",()=> {
+    k.add([
+
+        k.text("So this is the end...Stay curious and explore more,Remember you get only one chance at life :] ", {width : 600 , size:30}),
+        k.pos(14,60)
+
+    ])
+
+    k.add([
+        k.text("Made by reaous with <3"),
+        k.pos(150,200),
+        k.area(),
+        k.body()
+    ])
+
 
 })
 
